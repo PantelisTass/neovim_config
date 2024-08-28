@@ -1,0 +1,25 @@
+# Include this code block at the top of a *.snippets file...
+# ----------------------------- #
+global !p
+def math():
+  return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+endglobal
+# ----------------------------- #
+# ...then place 'context "math()"' above any snippets you want to expand only in math mode
+
+context "math()"
+
+# Prevent fraction expansion in words containing "ff"
+snippet "(^|[^a-zA-Z])ff" "\frac{}{}" rA
+`!p snip.rv = match.group(1)`\frac{${1:${VISUAL:}}}{$2}$0
+endsnippet
+
+# Easily insert Euler's number e
+snippet "([^a-zA-Z])ee" "e^{} supercript" rA
+`!p snip.rv = match.group(1)`e^{${1:${VISUAL:}}}$0
+endsnippet
+
+# A command I personally use for differentials
+snippet "([^a-zA-Z0-9])df" "\diff" rA
+`!p snip.rv = match.group(1)`\diff 
+endsnippet
