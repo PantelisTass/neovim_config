@@ -9,3 +9,23 @@ endsnippet
 snippet "(^|[^a-zA-Z])mm" "Inline LaTeX math" rA
 `!p snip.rv = match.group(1)`\$ ${1:${VISUAL:}} \$$0
 endsnippet
+
+# Snippet for creating aligned math equation
+snippet aleq "New LaTeX environment" b
+\begin{array}{ll}
+    $1 &= b \\\\
+     &= $2+d
+\end{array}
+$0
+endsnippet
+
+
+# Snippet for array with left brace in LaTeX
+snippet arr "New LaTeX environment" b
+\left.
+\begin{array}{cc}
+    &$1 \\\\
+    &$2
+\end{array}\right\\}
+$0
+endsnippet

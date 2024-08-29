@@ -14,6 +14,9 @@ nmap <localleader>vv <plug>(vimtex-view)
 " Define a custom shortcut to trigger VimtexStop
 nmap <localleader>vs <plug>(vimtex-stop)
 
+" Use `dsm` to delete surrounding math (replacing the default shortcut `ds$`)
+nmap dsm <Plug>(vimtex-env-delete-math)
+
 function! s:TexFocusVim() abort
   " Replace `TERMINAL` with the name of your terminal application
   " Example: execute "!open -a iTerm"  

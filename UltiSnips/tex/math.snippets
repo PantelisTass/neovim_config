@@ -19,7 +19,17 @@ snippet "([^a-zA-Z])ee" "e^{} supercript" rA
 `!p snip.rv = match.group(1)`e^{${1:${VISUAL:}}}$0
 endsnippet
 
-# A command I personally use for differentials
+# A command for differentials
 snippet "([^a-zA-Z0-9])df" "\diff" rA
 `!p snip.rv = match.group(1)`\diff 
+endsnippet
+
+# A command for the integral sign
+snippet "([^a-zA-Z0-9])intb" "integral displaystyle" rA
+`!p snip.rv = match.group(1)`\displaystyle\int_{$1}^{$2}$0 
+endsnippet
+
+# A command for the integral sign
+snippet "([^a-zA-Z0-9])ints" "integral" rA
+`!p snip.rv = match.group(1)`\int_{$1}^{$2}$0 
 endsnippet

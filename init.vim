@@ -81,3 +81,9 @@ let mapleader = " "
 
 " Use <leader>u in normal mode to refresh UltiSnips snippets
 nnoremap <leader>u <Cmd>call UltiSnips#RefreshSnippets()<CR>
+
+" Use <leader>bn in normal mode to move to next buffer
+nnoremap <leader>bn <CR>:bnext<CR>
+
+" Use <leader>bp in normal mode to move to previous uffer
+nnoremap <leader>bp <CR>:bprevious<CR>
