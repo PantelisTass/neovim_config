@@ -92,24 +92,23 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
 
 " Set the Catppuccin color scheme
-colorscheme dracula
+	 colorscheme dracula
 
 
-" Optional: Customize background and other settings
-set background=light " or "light" for light mode
+	" Optional: Customize background and other settings
+	set background=dark " or "light" for light mode
 
 
-filetype plugin indent on
+	filetype plugin indent on
 
-" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
-" - https://github.com/Valloric/YouCompleteMe
+	" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+	" - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
 " This code should go in your vimrc or init.vim
-let g:UltiSnipsExpandTrigger       = '<c-j>'    " use Tab to expand snippets
-let g:UltiSnipsJumpForwardTrigger  = '<c-j>'    " use Tab to move forward through tabstops
-let g:UltiSnipsJumpBackwardTrigger = '<c-k>'  " use Shift-Tab to move backward through tabstops
+let g:UltiSnipsExpandTrigger       = '<tab>'    " use Tab to expand snippets
+let g:UltiSnipsJumpForwardTrigger  = '<s-j>'    " use Tab to move forward through tabstops
+let g:UltiSnipsJumpBackwardTrigger = '<s-k>'  " use Shift-Tab to move backward through tabstops
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']  " using Neovim
-
 
 
 " If you want :UltiSnipsEdit to split your window.

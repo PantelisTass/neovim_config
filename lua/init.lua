@@ -22,13 +22,11 @@ cmp.setup({
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-        vim.fn.feedkeys(t('<Plug>(ultisnips_expand)'), '')
       elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-        vim.fn.feedkeys(t('<Plug>(ultisnips_jump_forward)'), '')
-      elseif check_backspace() then
-        fallback()
-      else
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Plug>(ultisnips-jump-forward)", true, true, true), "m", true)
+      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippet()<CR>", true, true, true), "m", true)
+	else
         fallback()
       end
     end, { "i", "s" }),
@@ -71,7 +69,6 @@ lspconfig.texlab.setup {
   settings = {
     texlab = {
       build = {
-        executable = "latexmk",
         args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
         onSave = true,
       },
@@ -97,5 +94,12 @@ cmp.setup.filetype('tex', {
     { name = 'path' },
   })
 })
+
+
+-- Map Tab in visual mode to save the visual selection using UltiSnips
+vim.api.nvim_set_keymap('v', '<Tab>', ':call UltiSnips#SaveLastVisualSelection()<CR>gv', { noremap = true, silent = true })
+
+-- Map Tab in visual mode to save the visual selection using UltiSnips
+vim.api.nvim_set_keymap('i', '<Tab>', ':call UltiSnips#SaveLastVisualSelection()<CR>gv', { noremap = true, silent = true })
 
 
