@@ -25,11 +25,11 @@ snippet "([^a-zA-Z0-9])df" "\diff" rA
 endsnippet
 
 # A command for the integral sign
-snippet "([^a-zA-Z0-9])intb" "integral displaystyle" rA
-`!p snip.rv = match.group(1)`\displaystyle\int_{$1}^{$2}$0 
-endsnippet
+snippet int "integral displaystyle"
+\displaystyle\int_{$1}^{$2}$3 \diff $4 $0 
+endsnippet	
 
 # A command for the integral sign
-snippet "([^a-zA-Z0-9])ints" "integral" rA
-`!p snip.rv = match.group(1)`\int_{$1}^{$2}$0 
+snippet ints "integral"
+\int_{$1}^{$2}$3 \diff $4 $0 
 endsnippet

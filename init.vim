@@ -73,9 +73,30 @@ Plug 'saadparwaiz1/cmp_luasnip' " Snippet completions
 Plug 'L3MON4D3/LuaSnip'        " Snippet engine
 Plug 'onsails/lspkind-nvim'    " VSCode-like pictograms for completion items
 
+" nvim-cmp and related plugins
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'  " UltiSnips integration for nvim-cmp
+Plug 'SirVer/ultisnips'  " Snippet engine
+
+" Add the color scheme plugin
+Plug 'morhetz/gruvbox'
+
+" Add the OneDark color scheme plugin
+Plug 'joshdick/onedark.vim'
+
+" Add the Catppuccin color scheme plugin
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " End vim-plug section
 call plug#end()
+
+" Set the Catppuccin color scheme
+colorscheme dracula
+
+
+" Optional: Customize background and other settings
+set background=light " or "light" for light mode
 
 
 filetype plugin indent on
@@ -84,10 +105,12 @@ filetype plugin indent on
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
 " This code should go in your vimrc or init.vim
-let g:UltiSnipsExpandTrigger       = '<tab>'    " use Tab to expand snippets
-let g:UltiSnipsJumpForwardTrigger  = '<tab>'    " use Tab to move forward through tabstops
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'  " use Shift-Tab to move backward through tabstops
+let g:UltiSnipsExpandTrigger       = '<c-j>'    " use Tab to expand snippets
+let g:UltiSnipsJumpForwardTrigger  = '<c-j>'    " use Tab to move forward through tabstops
+let g:UltiSnipsJumpBackwardTrigger = '<c-k>'  " use Shift-Tab to move backward through tabstops
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']  " using Neovim
+
+
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"

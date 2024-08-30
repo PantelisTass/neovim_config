@@ -1,72 +1,101 @@
- -- Set up nvim-cmp.
+-- Utility function to handle termcodes
+local function t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+-- Function to check if the cursor is at the beginning of the line or after whitespace
+local function check_backspace()
+  local col = vim.fn.col('.') - 1
+  return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+end
+
+-- Setup nvim-cmp
 local cmp = require'cmp'
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      vim.fn["UltiSnips#Anon"](args.body)  -- For UltiSnips integration
     end,
   },
   mapping = {
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item.
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+        vim.fn.feedkeys(t('<Plug>(ultisnips_expand)'), '')
+      elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+        vim.fn.feedkeys(t('<Plug>(ultisnips_jump_forward)'), '')
+      elseif check_backspace() then
+        fallback()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+        vim.fn.feedkeys(t('<Plug>(ultisnips_jump_backward)'), '')
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },       -- LSP completions
-    { name = 'ultisnips' },      -- UltiSnips completions
-    { name = 'buffer' },         -- Buffer completions
-    { name = 'path' },           -- Path completions
-    { name = 'nvim_lua' },       -- Lua completions for Neovim config
+    { name = 'nvim_lsp' },
+    { name = 'ultisnips' }, -- UltiSnips source
+    { name = 'buffer' },
+    { name = 'path' },
+  }),
+})
+
+-- Setup LSP for LaTeX
+local lspconfig = require'lspconfig'
+
+lspconfig.texlab.setup {
+  capabilities = require'cmp_nvim_lsp'.default_capabilities(),
+  on_attach = function(client, bufnr)
+    -- Additional LSP settings for LaTeX
+    local buf_map = function(bufnr, mode, lhs, rhs, opts)
+      vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {silent = true})
+    end
+
+    -- Example: key mapping for LaTeX LSP
+    buf_map(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+    buf_map(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+  end,
+  settings = {
+    texlab = {
+      build = {
+        executable = "latexmk",
+        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+        onSave = true,
+      },
+      forwardSearch = {
+        executable = "zathura",
+        args = { "--synctex-forward", "%l:1:%f", "%p" },
+      },
+      chktex = {
+        onOpenAndSave = true,
+        onEdit = true,
+	ignoreWarnings = { "24" }, -- Disable "missing $" error,
+      },
+    },
+  },
+}
+
+-- Specific setup for LaTeX files
+cmp.setup.filetype('tex', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'ultisnips' },
+    { name = 'buffer' },
+    { name = 'path' },
   })
 })
 
--- Set up LSP for nvim-cmp
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require'lspconfig'
-
--- Example LSP setup (e.g., Python)
-lspconfig.pyright.setup{
-  capabilities = capabilities,
-}
-
--- Ensure nvim-lspconfig is installed
-require'lspconfig'.texlab.setup{}
-
--- Alternatively, you can set up digestif like this:
--- require'lspconfig'.digestif.setup{}
-
--- Optional: Configure additional settings
-require'lspconfig'.texlab.setup{
-  settings = {
-    texlab = {
-      auxDirectory = ".",
-      bibtexFormatter = "texlab",
-      build = {
-        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-        executable = "latexmk",
-        forwardSearchAfter = false,
-        onSave = true
-      },
-      chktex = {
-        onEdit = false,
-        onOpenAndSave = true
-      },
-      diagnosticsDelay = 300,
-      formatterLineLength = 80,
-      forwardSearch = {
-        executable = nil,  -- Set this to your PDF viewer executable
-        args = {}
-      },
-      latexFormatter = "latexindent",
-      latexindent = {
-        modifyLineBreaks = true
-      }
-    }
-  }
-}
 

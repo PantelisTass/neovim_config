@@ -12,20 +12,64 @@ endsnippet
 
 # Snippet for creating aligned math equation
 snippet aleq "New LaTeX environment" b
-\begin{array}{ll}
+\\[\begin{array}{ll}
     $1 &= b \\\\
      &= $2+d
 \end{array}
+\\]
 $0
 endsnippet
 
 
 # Snippet for array with left brace in LaTeX
 snippet arr "New LaTeX environment" b
+\\[
 \left.
 \begin{array}{cc}
     &$1 \\\\
     &$2
 \end{array}\right\\}
-$0
+\\] $0
 endsnippet
+
+# Snippet for single svg image
+snippet imsvg "svg image" b
+\begin{figure}[H]
+    \\centering
+    \\includesvg[width=$1\\linewidth]{$2 image.svg}
+    \\caption{$3 caption}
+    \\label{fig: label of figure}
+\end{figure}$0
+endsnippet 
+
+# Snippet for single non-svg image
+snippet im "non-svg image" b
+\begin{figure}[H]
+    \\centering
+    \\incluegraphics[width=$1\\linewidth]{$2 image.jpg}
+    \\caption{$3 caption}
+    \\label{fig: label of figure}
+\end{figure}$0
+endsnippet 
+
+# Snippet for single non-svg image
+snippet imm "double non-svg image" b
+\begin{examplesblock}{Examples:}\label{$1 label}
+    \begin{figure}[H]
+\begin{subfigure}{$2\textwidth}
+  \centering
+  \includegraphics[width=$3\linewidth]{$4 image1.png}
+  \caption{$5 caption}
+  \label{fig:$6 description}
+\end{subfigure}%
+\begin{subfigure}{$7\textwidth}
+  \centering
+  \includesvg[width=$8\linewidth]{$9 image2.png}
+  \caption{$10 caption}
+  \label{fig: $11 description}
+\end{subfigure}
+\caption{$12 caption}
+\label{fig: $13 label}
+\end{figure}$0
+endsnippet 
+
