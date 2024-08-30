@@ -56,8 +56,27 @@ Plug 'tpope/vim-sensible'
 Plug 'lervag/vimtex'
 Plug 'karb94/neoscroll.nvim'
 
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+Plug 'hrsh7th/nvim-cmp'        " Completion plugin
+Plug 'hrsh7th/cmp-buffer'      " Buffer completions
+Plug 'hrsh7th/cmp-path'        " Path completions
+Plug 'hrsh7th/cmp-cmdline'     " Command-line completions
+Plug 'hrsh7th/cmp-nvim-lsp'    " LSP completions
+Plug 'hrsh7th/cmp-nvim-lua'    " Lua completions for nvim config
+Plug 'saadparwaiz1/cmp_luasnip' " Snippet completions
+Plug 'L3MON4D3/LuaSnip'        " Snippet engine
+Plug 'onsails/lspkind-nvim'    " VSCode-like pictograms for completion items
+
+
 " End vim-plug section
 call plug#end()
+
 
 filetype plugin indent on
 
@@ -87,3 +106,5 @@ nnoremap <leader>bn <CR>:bnext<CR>
 
 " Use <leader>bp in normal mode to move to previous uffer
 nnoremap <leader>bp <CR>:bprevious<CR>
+
+lua require('init')
