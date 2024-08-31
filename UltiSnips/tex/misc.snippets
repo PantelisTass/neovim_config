@@ -1,3 +1,14 @@
+
+#Include this code block at the top of a *.snippets file...
+# ----------------------------- #
+global !p
+def math():
+  return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+endglobal
+# ----------------------------- #
+# ...then place 'context "math()"' above any snippets you want to expand only in math mode
+
+
 # Snippet for inserting named links with href
 snippet hr "The hyperref package's \href{}{} command (for url links)"
 \href{${1:url}}{${2:display name}}$0
@@ -6,6 +17,26 @@ endsnippet
 snippet cite "The snippet that creates a citation"
 \cite{${1:${VISUAL:}}}$0
 endsnippet
+
+# math mode snippets
+context "math()"
+snippet "(^|[^a-zA-Z])bb" "The snippet that creates a mathbb symbol" rA
+\mathbb{${1:${VISUAL:}}}$0
+endsnippet
+
+snippet "(^|[^a-zA-Z])bf" "The snippet that creates a mathbf symbol" rA 
+\mathbf{${1:${VISUAL:}}}$0
+endsnippet
+
+
+snippet "(^|[^a-zA-Z])bb" "The snippet that creates a mathbf symbol" rA 
+\mathbb{${1:${VISUAL:}}}$0
+endsnippet
+
+snippet "(^|[^a-zA-Z])mc" "The snippet that creates a mathcal symbol" rA 
+\mathcal{${1:${VISUAL:}}}$0
+endsnippet
+
 
 
 

@@ -7,12 +7,13 @@ $0
 endsnippet
 
 snippet "(^|[^a-zA-Z])mm" "Inline LaTeX math" rA
-`!p snip.rv = match.group(1)`\$ ${1:${VISUAL:}} \$$0
+`!p snip.rv = match.group(1)`\$ ${1:${VISUAL:}}\$$0
 endsnippet
 
 # Snippet for creating aligned math equation
-snippet aleq "New LaTeX environment" b
-\\[\begin{array}{ll}
+snippet aleq "Aligned equation environment" b
+\\[
+\begin{array}{ll}
     $1 &= b \\\\
      &= $2+d
 \end{array}
@@ -20,17 +21,61 @@ snippet aleq "New LaTeX environment" b
 $0
 endsnippet
 
+# Snippet for array with right brace in LaTeX
+snippet arr "Array with right brace environment"
+\left.
+\begin{arr
+ay}{@{}r@{}}
+    $1 \\\\
+    $2
+\end{array}\right\rbrace $0
+endsnippet
 
 # Snippet for array with left brace in LaTeX
-snippet arr "New LaTeX environment" b
-\\[
-\left.
-\begin{array}{cc}
-    &$1 \\\\
-    &$2
-\end{array}\right\\}
-\\] $0
+snippet arrl "Array with left brace environment"
+\left\lbrace
+\begin{array}{@{}l@{}}
+    $1 \\\\
+    $2
+\end{array}\right.$0
 endsnippet
+
+snippet def "Definition environment" b 
+\begin{boxdef}[$1]\label{def: $2}
+$3
+\end{boxdef}$0
+endsnippet
+
+snippet lemma "Lemma environment" b 
+\begin{boxlemma}[$1]\label{lemma: $2}
+$3
+\end{boxlemma}$0
+endsnippet
+
+snippet thm "Theorem environment" b 
+\begin{theorem}[$1]\label{thm: $2}
+$3
+\end{theorem}$0
+endsnippet
+
+snippet cor "Corollary environment" b 
+\begin{boxcor}[$1]\label{cor: $2}
+$3
+\end{boxcor}$0
+endsnippet
+
+snippet prop "Proposition environment" b 
+\begin{boxprop}[$1]\label{prop: $2}
+$3
+\end{boxprop}$0
+endsnippet
+
+snippet ex "Example environment" b 
+\begin{examplesblock}{Examples: $1}\label{examples: $2}
+$3
+\end{examplesblock}$0
+endsnippet
+
 
 # Snippet for single svg image
 snippet imsvg "svg image" b
@@ -72,4 +117,5 @@ snippet imm "double non-svg image" b
 \label{fig: $13 label}
 \end{figure}$0
 endsnippet 
+
 

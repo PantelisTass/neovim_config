@@ -129,4 +129,6 @@ nnoremap <leader>bn <CR>:bnext<CR>
 " Use <leader>bp in normal mode to move to previous uffer
 nnoremap <leader>bp <CR>:bprevious<CR>
 
+nnoremap <s-s> <CR>:w<CR>
+
 lua require('init')

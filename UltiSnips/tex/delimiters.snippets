@@ -1,4 +1,34 @@
-# Quickly insert a zero subscript
+## Include this code block at the top of a *.snippets file...
+# ----------------------------- #
+global !p
+def math():
+  return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+endglobal
+# ----------------------------- #
+# ...then place 'context "math()"' above any snippets you want to expand only in math mode Quickly insert a zero subscript
+
 snippet "([a-zA-Z]|[\}\)\]\|'])00" "Automatic 0 subscript" rA
-`!p snip.rv = match.group(1)`_{0}
+`!p snip.rv = match.group(1)`_{$1}$0
 endsnippet
+
+# Quickly insert a one superscript
+snippet "([a-zA-Z]|[\}\)\]\|'])11" "Automatic 1 superscript" rA
+`!p snip.rv = match.group(1)`^{$1}$0
+endsnippet
+
+snippet ( "Expand parentheses" 
+($1)$0
+endsnippet
+
+snippet [ "Expand square parentheses" 
+[$1]$0
+endsnippet
+
+snippet e[ "Expand maths parentheses" 
+\[
+$1
+\]
+$0
+endsnippet
+
+

@@ -10,7 +10,7 @@ endglobal
 context "math()"
 
 # Prevent fraction expansion in words containing "ff"
-snippet "(^|[^a-zA-Z])ff" "\frac{}{}" rA
+snippet "(^|[i^a-zA-Z])ff" "\frac{}{}" rA
 `!p snip.rv = match.group(1)`\frac{${1:${VISUAL:}}}{$2}$0
 endsnippet
 
@@ -33,3 +33,24 @@ endsnippet
 snippet ints "integral"
 \int_{$1}^{$2}$3 \diff $4 $0 
 endsnippet
+
+snippet "([^a-zA-Z])sum" "Big sum" rA
+\displaystyle\sum^{$1}_{$2}$0 
+endsnippet
+
+snippet "([^a-zA-Z])cupb" "Big union" rA
+\displaystyle\bigcup^{$1}_{$2}$0 
+endsnippet
+
+snippet "([^a-zA-Z])capb" "Big intersection" rA
+\displaystyle\bigcap^{$1}_{$2}$0 
+endsnippet
+
+snippet lim "Limit"
+\displaystyle \lim_{$1}$0 
+endsnippet
+
+
+
+
+

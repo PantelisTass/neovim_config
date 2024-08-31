@@ -9,15 +9,20 @@ let g:vimtex_quickfix_ignore_filters = [
       \]
 let g:vimtex_view_method = 'skim'
 " Set latexmk as the default compiler
+let g:vimtex_compiler_method = 'latexmk'
+
 let g:vimtex_view_skim_sync = 1
 let g:vimtex_view_skim_activate = 1
 let g:vimtex_compiler_latexmk = {
+    \ 'continuous' : 1,
     \ 'build_dir' : '',
     \ 'options' : [
     \   '-shell-escape',
     \ 	'-lualatex',
     \   '-pdf',
     \	'-f',
+    \   '-bibtex-cond',
+    \   '-bibtex',
     \   '-interaction=nonstopmode',
     \   '-synctex=1',
     \ ],
