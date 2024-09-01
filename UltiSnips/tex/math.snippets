@@ -10,7 +10,7 @@ endglobal
 context "math()"
 
 # Prevent fraction expansion in words containing "ff"
-snippet "(^|[i^a-zA-Z])ff" "\frac{}{}" rA
+snippet "([^a-zA-Z])ff" "\frac{}{}" rA
 `!p snip.rv = match.group(1)`\frac{${1:${VISUAL:}}}{$2}$0
 endsnippet
 
@@ -34,7 +34,7 @@ snippet ints "integral"
 \int_{$1}^{$2}$3 \diff $4 $0 
 endsnippet
 
-snippet "([^a-zA-Z])sum" "Big sum" rA
+snippet "([^a-zA-Z])sumb" "Big sum" rA
 \displaystyle\sum^{$1}_{$2}$0 
 endsnippet
 
