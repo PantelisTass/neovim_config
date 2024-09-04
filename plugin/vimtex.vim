@@ -11,6 +11,9 @@ let g:vimtex_view_method = 'skim'
 " Set latexmk as the default compiler
 let g:vimtex_compiler_method = 'latexmk'
 
+set conceallevel=1
+let g:tex_conceal = 'abdmg'
+
 let g:vimtex_view_skim_sync = 1
 let g:vimtex_view_skim_activate = 1
 let g:vimtex_compiler_latexmk = {

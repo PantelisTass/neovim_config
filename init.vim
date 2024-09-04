@@ -83,6 +83,9 @@ Plug 'morhetz/gruvbox'
 " Add the OneDark color scheme plugin
 Plug 'joshdick/onedark.vim'
 
+" Add the wal colour scheme
+Plug 'dylanaraps/wal'
+
 " Add the Catppuccin color scheme plugin
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 
@@ -91,18 +94,12 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 " End vim-plug section
 call plug#end()
 
-" Set the Catppuccin color scheme
-	 colorscheme dracula
+colorscheme dracula
+set background=dark
+filetype plugin indent on
 
-
-	" Optional: Customize background and other settings
-	set background=dark " or "light" for light mode
-
-
-	filetype plugin indent on
-
-	" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
-	" - https://github.com/Valloric/YouCompleteMe
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
 " This code should go in your vimrc or init.vim
 let g:UltiSnipsExpandTrigger       = '<tab>'    " use Tab to expand snippets

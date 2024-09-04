@@ -30,3 +30,9 @@ augroup vimtex_event_focus
   au User VimtexEventViewReverse call s:TexFocusVim()
 augroup END
 
+setlocal spell
+
+set spelllang=en_gb
+
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+
