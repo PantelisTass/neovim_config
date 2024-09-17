@@ -1,3 +1,13 @@
+#Include this code block at the top of a *.snippets file...
+# ----------------------------- #
+global !p
+def math():
+  return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+endglobal
+# ----------------------------- #
+# ...then place 'context "math()"' above any snippets you want to expand only in math mode
+
+
 # Snippet for creating new generic LaTeX environments
 snippet env "New LaTeX environment" b
 \begin{$1}
@@ -40,6 +50,18 @@ snippet arrl "Array with left brace environment"
 \end{array}\right.$0
 endsnippet
 
+snippet box "Box"
+`!p snip.rv = '┌' + '─' * (len(t[1]) + 2) + '┐'`
+│ $1 │
+`!p snip.rv = '└' + '─' * (len(t[1]) + 2) + '┘'`
+$0
+endsnippet
+
+context "math()"
+snippet "(^|[^a-zA-Z])txt" "text env" rA
+`!p snip.rv = match.group(1)`\text{$1}$0
+endsnippet
+
 snippet def "Definition environment" b 
 \begin{boxdef}[$1]\label{def: $2}
 $3
@@ -64,6 +86,7 @@ $3
 \end{boxcor}$0
 endsnippet
 
+priority 100
 snippet prop "Proposition environment" b 
 \begin{boxprop}[$1]\label{prop: $2}
 $3

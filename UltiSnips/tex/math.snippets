@@ -2,13 +2,12 @@
 # ----------------------------- #
 global !p
 def math():
-  return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 endglobal
 # ----------------------------- #
 # ...then place 'context "math()"' above any snippets you want to expand only in math mode
 
-context "math()"
-
+context math()
 # Prevent fraction expansion in words containing "ff"
 snippet "([^a-zA-Z])ff" "\frac{}{}" rA
 `!p snip.rv = match.group(1)`\frac{${1:${VISUAL:}}}{$2}$0
@@ -25,6 +24,10 @@ snippet "([^a-zA-Z0-9])sup" "\sup" rA
 `!p snip.rv = match.group(1)`\displaystyle\sup_{$1}
 endsnippet 
 
+context math()
+snippet "([^a-zA-Z0-9])lim" "limit" rA 
+`!p snip.rv = match.group(1)`\displaystyle\lim_{$1}$0
+endsnippet
 
 context math()
 snippet "([^a-zA-Z0-9])inf" "\inf" rA 
@@ -33,15 +36,24 @@ endsnippet
 
 
 context math()
-snippet "([^a-zA-Z0-9])limsup" "\limsup" rA 
+snippet "([^a-zA-Z0-9])lsup" "\limsup" rA 
 `!p snip.rv = match.group(1)`\displaystyle\limsup_{$1} 
 endsnippet 
 
 
 context math()
-snippet "([^a-zA-Z0-9])liminf" "\liminf" rA 
+snippet "([^a-zA-Z0-9])linf" "\liminf" rA 
 `!p snip.rv = match.group(1)`\displaystyle\liminf_{$1}
-endsnippet 
+endsnippet
+
+context math()
+snippet "([^a-zA-Z0-9])LL" "stacked limit" rA 
+`!p snip.rv = match.group(1)`\stackrel{n\to \infty}{\longrightarrow}$0
+endsnippet
+
+
+
+
 
 
 context math()
@@ -51,7 +63,7 @@ endsnippet
 
 
 context math()
-snippet "([^a-zA-Z0-9])llp" "expectation" rA 
+snippet "([^a-zA-Z0-9])llp" "Lp spaces" rA 
 `!p snip.rv = match.group(1)`\mathcal{L}^{p}$0 
 endsnippet 
 
@@ -78,18 +90,24 @@ snippet "([^a-zA-Z])capp" "Big intersection" rA
 \displaystyle\bigcap^{$1}_{$2}$0 
 endsnippet
 
-snippet lim "Limit"
-\displaystyle \lim_{$1}$0 
+snippet "([^a-zA-Z])obr" "overbrace" rA
+\displaystyle\overbrace{$1}^{$2}$0 
 endsnippet
 
+snippet "([^a-zA-Z])ubr" "underbrace" rA
+\displaystyle\underbrace{$1}_{$2}$0 
+endsnippet
 
-
+snippet "([^a-zA-Z])II" "absolute value" rA
+| $1|$0 
+endsnippet
 
 
 context "math()"
-snippet cc "subset" Ai
-\subset 
+snippet "([^a-zA-Z])cc" "subseteq" rA
+\subseteq 
 endsnippet
+
 
 snippet notin "not in " iA
 \not\in 
@@ -113,11 +131,11 @@ snippet UU "cup" iA
 endsnippet
 
 snippet uuu "bigcup" iA
-\bigcup_{${1:i \in ${2: I}}} $0
+\displaystyle\bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
 snippet nnn "bigcap" iA
-\bigcap_{${1:i \in ${2: I}}} $0
+\displaystyle\bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
 snippet OO "emptyset" iA
@@ -134,6 +152,10 @@ endsnippet
 
 snippet ZZ "Z" iA
 \Z
+endsnippet
+
+snippet GG "cal G" iA 
+\mathcal{G}$0 
 endsnippet
 
 snippet <! "normal" iA
@@ -189,22 +211,14 @@ snippet "([a-zA-Z])bar" "bar" riA
 \overline{`!p snip.rv=match.group(1)`}
 endsnippet
 
-priority 10
-context "math()"
-snippet "hat" "hat" riA
-\hat{$1}$0
-endsnippet
-
-priority 100
-context "math()"
-snippet "([a-zA-Z])hat" "hat" riA
-\hat{`!p snip.rv=match.group(1)`}
-endsnippet
-
 snippet letw "let omega" iA
 Let $\Omega \subset \C$ be open.
 endsnippet
 
+context math()
+snippet "([a-zA-Z])eps" "epsilon" rA
+`!p snip.rv=match.group(1)`\epsilon
+endsnippet
 
 snippet HH "H" iA
 \mathbb{H}
@@ -312,7 +326,3 @@ snippet nn "Tikz node" w
 \node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};
 $0
 endsnippet
-
-
-
-

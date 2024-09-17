@@ -9,47 +9,67 @@ local function check_backspace()
   return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
--- Setup nvim-cmp
-local cmp = require'cmp'
+-- Setup UltiSnips options
+vim.g.UltiSnipsExpandTrigger = "<CR>"
+vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
+vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
+-- Set UltiSnips directories in Lua
+vim.g.UltiSnipsSnippetDirectories = { "UltiSnips" }
+
+-- Use Tab to save visual selection in visual mode
+vim.api.nvim_set_keymap('v', '<Tab>', ':<C-u>call UltiSnips#SaveLastVisualSelection()<CR>gvs', { noremap = true, silent = true })
+
+
+local cmp = require('cmp')
+
+-- Helper function to check if there's a word before the cursor
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body)  -- For UltiSnips integration
+      vim.fn["UltiSnips#Anon"](args.body)  -- Use UltiSnips to expand snippets
     end,
   },
   mapping = {
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    -- Tab to navigate the completion menu or jump through UltiSnips placeholders
+    ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item()
+        cmp.select_next_item()  -- Navigate to the next item in the completion menu
       elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Plug>(ultisnips-jump-forward)", true, true, true), "m", true)
-      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippet()<CR>", true, true, true), "m", true)
-	else
-        fallback()
-      end
-    end, { "i", "s" }),
-
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-        vim.fn.feedkeys(t('<Plug>(ultisnips_jump_backward)'), '')
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-j>", true, true, true), "m", true)
+      elseif has_words_before() then
+        cmp.complete()  -- If there are words before the cursor, trigger the completion
       else
-        fallback()
+        fallback()  -- Insert a regular tab character if no other conditions are met
       end
     end, { "i", "s" }),
 
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    -- Shift-Tab to navigate backwards in the completion menu or UltiSnips placeholders
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()  -- Navigate to the previous item in the completion menu
+      elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-k>", true, true, true), "m", true)
+      else
+        fallback()  -- Default behavior if neither completion nor snippet is active
+      end
+    end, { "i", "s" }),
+
+    -- Enter key to confirm selection from the completion menu
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'ultisnips' }, -- UltiSnips source
-    { name = 'buffer' },
-    { name = 'path' },
+    { name = 'nvim_lsp' },    -- LSP source for autocompletion
+    { name = 'ultisnips' },   -- UltiSnips source for snippet completion
+  }, {
+    { name = 'buffer' },      -- Buffer source for words in the buffer
   }),
 })
+
 
 -- Setup LSP for LaTeX
 local lspconfig = require'lspconfig'
@@ -94,12 +114,5 @@ cmp.setup.filetype('tex', {
     { name = 'path' },
   })
 })
-
-
--- Map Tab in visual mode to save the visual selection using UltiSnips
-vim.api.nvim_set_keymap('v', '<Tab>', ':call UltiSnips#SaveLastVisualSelection()<CR>gv', { noremap = true, silent = true })
-
--- Map Tab in visual mode to save the visual selection using UltiSnips
-vim.api.nvim_set_keymap('i', '<Tab>', ':call UltiSnips#SaveLastVisualSelection()<CR>gv', { noremap = true, silent = true })
 
 
